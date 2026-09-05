@@ -30,3 +30,31 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+# ---------- 以下为支付项目专用规则 ----------
+
+# 构建产物
+bin/
+dist/
+payment-server
+
+# 商户证书与私钥，严禁提交
+#
+# apiclient_key.pem 一旦进仓库就等于商户资金账户失守：
+# 持有它配合商户号可以发起任意退款。即使事后删除文件，
+# 它仍然留在 git 历史里，只能作废证书重新申请。
+#
+# certs/ 下只保留 README.md 说明文件，其余一律忽略。
+certs/*
+!certs/README.md
+*.pem
+*.p12
+*.key
+*.crt
+*.cer
+
+# 本地环境变量：可能含 APIv3 密钥等真实凭据
+# 注意顺序——通配必须在前、豁免在后，否则 .env.example 会被一起忽略
+.env.*
+!.env.example
+

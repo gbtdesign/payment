@@ -1,0 +1,37 @@
+# 构建上下文排除清单
+#
+# 这里最要紧的不是构建速度，而是安全：进入构建上下文的文件都可能被
+# `COPY . .` 带进镜像层，而镜像层一旦推送到仓库就无法从历史中抹掉。
+# 商户私钥进了镜像层，等同于把它交给了所有能 pull 该镜像的人。
+
+# 版本控制与编辑器
+.git
+.gitignore
+.idea
+.vscode
+.qoder
+
+# 构建产物：避免把本机编译出的二进制带进镜像
+bin/
+dist/
+*.exe
+*.test
+coverage.out
+
+# 证书与密钥，任何情况下都不允许进入构建上下文
+certs/
+*.pem
+*.p12
+*.key
+
+# 本地环境变量文件，可能含真实密钥
+.env
+.env.*
+!.env.example
+
+# 运行时用不到的文档与开发辅助文件
+docs/
+README.md
+Makefile
+Dockerfile
+.dockerignore

@@ -1,0 +1,60 @@
+# 支付服务配置模板
+#
+# 说明：
+#   1. 本文件不含任何真实密钥，可直接提交进仓库
+#   2. APIv3 密钥等敏感项只从环境变量读取，见同目录说明与 .env.example
+#   3. 所有配置项均可被环境变量覆盖，映射关系见 internal/config/config.go 的 bindEnvs
+#   4. 时长类配置使用 Go duration 字符串，如 15s、1m30s、500ms
+
+server:
+  # debug | release | test
+  # release 模式下：Gin 关闭调试输出、不注册 /api/v1/mock/* 调试接口、
+  # 强制校验回调地址为 HTTPS、校验证书文件是否存在
+  mode: debug
+  host: 0.0.0.0
+  port: 8080
+  # 读取整个请求（含 body）的超时
+  read_timeout: 15s
+  # 写响应的超时。支付回调应答体很小，15s 足够
+  write_timeout: 15s
+  # 收到 SIGTERM 后等待存量请求处理完成的时间，超时则强制断开
+  # 该值必须小于容器编排的 terminationGracePeriodSeconds，否则优雅关闭形同虚设
+  shutdown_timeout: 10s
+
+log:
+  # debug | info | warn | error
+  level: info
+  # console | json，生产环境用 json 便于日志采集系统解析结构化字段
+  format: console
+
+payment:
+  # 创建订单时未显式指定渠道所用的默认值
+  # 骨架阶段为 mock；接入微信支付后改为 wechatpay
+  default_channel: mock
+  # 回调地址域名前缀，必须公网可达
+  # 微信支付要求 HTTPS 且域名已完成 ICP 备案，本地联调需配合内网穿透
+  notify_base_url: "https://pay.example.com"
+  # 商户订单号前缀，最终订单号形如 ORD20260905123015Ab3xK9pQ，总长 <= 32
+  out_trade_no_prefix: "ORD"
+  # 支付流水号前缀
+  payment_no_prefix: "PAY"
+
+channels:
+  wechatpay:
+    # 骨架阶段保持 false，服务只注册 mock 渠道
+    enabled: false
+    # 公众号 / 小程序 AppID，需与商户号完成绑定
+    app_id: ""
+    # 商户号
+    mch_id: ""
+    # 商户 API 证书序列号（证书模式）。在商户平台「API 安全」页面查看
+    mch_cert_serial_no: ""
+    # 商户私钥 apiclient_key.pem 路径。该文件严禁提交进仓库，certs/ 已被 gitignore
+    private_key_path: ""
+    # 以下为「微信支付公钥模式」，与证书模式二选一
+    # 2024 年后新申请的商户号默认使用公钥模式
+    public_key_id: ""
+    public_key_path: ""
+    # 支付结果回调路径，与 payment.notify_base_url 拼成完整回调地址
+    notify_path: /api/v1/callbacks/wechatpay
+    # 注意：api_v3_key 不在本文件中配置，只能通过环境变量 WECHATPAY_API_V3_KEY 注入
