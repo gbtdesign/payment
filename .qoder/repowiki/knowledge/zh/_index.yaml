@@ -1,0 +1,25 @@
+# 知识卡导出索引文件
+schema_version: 1
+locale: zh-CN
+branch: main
+nodes_managed: true
+exported_at: "2026-09-30T14:47:19Z"
+modules:
+    "":
+        dir_name: 支付服务根工程与构建入口
+        title: 支付服务根工程与构建入口
+        scope:
+            - README.md
+            - Makefile
+            - Dockerfile
+            - .dockerignore
+            - .gitignore
+            - go.mod
+            - go.sum
+            - configs/
+            - cmd/server/
+            - .env.example
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
