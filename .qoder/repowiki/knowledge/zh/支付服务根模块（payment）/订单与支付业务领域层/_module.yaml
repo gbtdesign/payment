@@ -1,0 +1,11 @@
+schema_version: 1
+module_path: business_domains
+title: 订单与支付业务领域层
+scope:
+    - internal/service/
+    - internal/model/
+    - internal/dto/
+source_files: []
+depends_on: []
+related_to:
+    - path: http_layer

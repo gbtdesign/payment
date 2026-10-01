@@ -1,0 +1,10 @@
+schema_version: 1
+module_path: shared_utils
+title: 共享基础工具包（ID、日志、金额、响应与错误码）
+scope:
+    - internal/pkg/
+    - internal/errcode/
+source_files: []
+depends_on: []
+related_to:
+    - path: http_layer

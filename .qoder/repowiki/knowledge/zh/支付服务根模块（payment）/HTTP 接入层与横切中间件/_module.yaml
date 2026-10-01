@@ -1,0 +1,11 @@
+schema_version: 1
+module_path: http_layer
+title: HTTP 接入层与横切中间件
+scope:
+    - internal/handler/
+    - internal/middleware/
+source_files: []
+depends_on: []
+related_to:
+    - path: business_domains
+    - path: shared_utils

@@ -3,11 +3,11 @@ schema_version: 1
 locale: zh-CN
 branch: main
 nodes_managed: true
-exported_at: "2026-09-30T14:47:19Z"
+exported_at: "2026-10-01T14:33:10Z"
 modules:
     "":
-        dir_name: 支付服务根工程与构建入口
-        title: 支付服务根工程与构建入口
+        dir_name: 支付服务根模块（payment）
+        title: 支付服务根模块（payment）
         scope:
             - README.md
             - Makefile
@@ -16,10 +16,46 @@ modules:
             - .gitignore
             - go.mod
             - go.sum
-            - configs/
-            - cmd/server/
             - .env.example
+        source_files: []
+        children:
+            - business_domains
+            - http_layer
+            - shared_utils
+        depends_on: []
+        related_to: []
+    business_domains:
+        dir_name: 订单与支付业务领域层
+        title: 订单与支付业务领域层
+        scope:
+            - internal/service/
+            - internal/model/
+            - internal/dto/
         source_files: []
         children: []
         depends_on: []
-        related_to: []
+        related_to:
+            - path: http_layer
+    http_layer:
+        dir_name: HTTP 接入层与横切中间件
+        title: HTTP 接入层与横切中间件
+        scope:
+            - internal/handler/
+            - internal/middleware/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: business_domains
+            - path: shared_utils
+    shared_utils:
+        dir_name: 共享基础工具包（ID、日志、金额、响应与错误码）
+        title: 共享基础工具包（ID、日志、金额、响应与错误码）
+        scope:
+            - internal/pkg/
+            - internal/errcode/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: http_layer

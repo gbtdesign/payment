@@ -1,0 +1,15 @@
+schema_version: 1
+module_path: ""
+title: 支付服务根模块（payment）
+scope:
+    - README.md
+    - Makefile
+    - Dockerfile
+    - .dockerignore
+    - .gitignore
+    - go.mod
+    - go.sum
+    - .env.example
+source_files: []
+depends_on: []
+related_to: []
